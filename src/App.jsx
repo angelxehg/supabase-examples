@@ -3,9 +3,10 @@ import { createClient } from '@supabase/supabase-js'
 
 import './App.css';
 
-const supabaseUrl = 'https://fbqcsbackkddeeoiphvu.supabase.co'
-const supabaseKey = 'INSERT_API_KEY';
-const supabase = createClient(supabaseUrl, supabaseKey)
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL, 
+  process.env.REACT_APP_SUPABASE_KEY
+)
 
 function App() {
 
