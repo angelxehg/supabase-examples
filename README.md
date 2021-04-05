@@ -18,4 +18,4 @@ Utilice estos comandos para mantener la calidad del código
 
 - Unit testing: `npm run test`
 
-<!-- - Code linting: `npm run lint` -->
+- Code linting: `npm run lint`
