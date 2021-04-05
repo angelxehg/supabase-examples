@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { createClient } from '@supabase/supabase-js';
 import PropTypes from 'prop-types';
 
@@ -53,6 +54,9 @@ function App() {
   return (
     <div className="container-sm pt-3 pb-3">
       <header>
+        <Helmet title="Supabase Examples">
+          <body className="bg-light" />
+        </Helmet>
         <div className="row align-items-center">
           <div className="col">
             <h1>Supabase Examples</h1>
