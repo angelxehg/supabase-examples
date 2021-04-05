@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
+import PropTypes from 'prop-types';
 
 import './App.css';
 
@@ -8,9 +9,31 @@ const supabase = createClient(
   process.env.REACT_APP_SUPABASE_KEY
 )
 
+const TaskItem = (props) => {
+
+  const { content } = props.item;
+
+  return (
+    <div className="card">
+      <div className="card-body">
+        <p className="card-text">
+          {content}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+TaskItem.propTypes = {
+  item: PropTypes.object.isRequired
+}
+
 function App() {
 
   const [tasks, setTasks] = useState([]);
+
+  const pendingTasks = () => tasks.filter(i => i.done === false);
+  const completedTasks = () => tasks.filter(i => i.done === true);
 
   const fetchTasks = async () => {
     const { data, error } = await supabase
@@ -43,13 +66,15 @@ function App() {
           </div>
         </div>
       </header>
-      <main className="mt-2">
-        <h2>Mis tareas</h2>
-        <ul>
-          {tasks.map(task => <li key={task.id}>
-            {task.content}
-          </li>)}
-        </ul>
+      <main>
+        <div className="mt-2">
+          <h2>Pendientes</h2>
+          {pendingTasks().map(task => <TaskItem key={task.id} item={task} />)}
+        </div>
+        <div className="mt-2">
+          <h2>Completadas</h2>
+          {completedTasks().map(task => <TaskItem key={task.id} item={task} />)}
+        </div>
       </main>
     </div>
   );
