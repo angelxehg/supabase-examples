@@ -10,23 +10,55 @@ const supabase = createClient(
   process.env.REACT_APP_SUPABASE_KEY
 )
 
+const TaskMarkButton = (props) => (
+  <button type="button" className="btn btn-outline-success btn-sm" onClick={props.onClick}>
+    Completar
+  </button>
+)
+
+TaskMarkButton.propTypes = {
+  item: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired
+}
+
+
+const TaskUnmarkButton = (props) => (
+  <button type="button" className="btn btn-outline-warning btn-sm" onClick={props.onClick}>
+    Sin completar
+  </button>
+)
+
+TaskUnmarkButton.propTypes = {
+  item: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired
+}
+
 const TaskItem = (props) => {
 
-  const { content } = props.item;
+  const { id, content, done } = props.item;
+  const { setDone } = props;
 
   return (
     <div className="card">
       <div className="card-body">
-        <p className="card-text">
-          {content}
-        </p>
+        <div className="row">
+          <div className="col">
+            <p className="card-text">
+              {content}
+            </p>
+          </div>
+          <div className="col-auto">
+            {done ? <TaskUnmarkButton onClick={() => setDone(id, false)} /> : <TaskMarkButton onClick={() => setDone(id, true)} />}
+          </div>
+        </div>
       </div>
     </div>
   )
 }
 
 TaskItem.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
+  setDone: PropTypes.func.isRequired
 }
 
 function App() {
@@ -44,6 +76,17 @@ function App() {
       return console.error(error);
     }
     setTasks(data)
+  }
+
+  const setTaskDone = async (id, done = false) => {
+    const { error } = await supabase
+      .from('tasks')
+      .update({ done: done })
+      .eq('id', id)
+    if (error) {
+      return console.error(error);
+    }
+    await fetchTasks();
   }
 
   useEffect(() => {
@@ -73,11 +116,11 @@ function App() {
       <main>
         <div className="mt-2">
           <h2>Pendientes</h2>
-          {pendingTasks().map(task => <TaskItem key={task.id} item={task} />)}
+          {pendingTasks().map(task => <TaskItem key={task.id} item={task} setDone={setTaskDone} />)}
         </div>
         <div className="mt-2">
           <h2>Completadas</h2>
-          {completedTasks().map(task => <TaskItem key={task.id} item={task} />)}
+          {completedTasks().map(task => <TaskItem key={task.id} item={task} setDone={setTaskDone} />)}
         </div>
       </main>
     </div>
