@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import { createClient } from '@supabase/supabase-js'
 
 import './App.css';
 
 const supabase = createClient(
-  process.env.REACT_APP_SUPABASE_URL, 
+  process.env.REACT_APP_SUPABASE_URL,
   process.env.REACT_APP_SUPABASE_KEY
 )
 
@@ -29,15 +28,22 @@ function App() {
 
 
   return (
-    <div>
+    <div className="container-sm pt-3 pb-3">
       <header>
-        <h1>Supabase Examples</h1>
-        <p>Hola mundo</p>
-        <Button onClick={fetchTasks}>
-          Recargar
-        </Button>
+        <div className="row align-items-center">
+          <div className="col">
+            <h1>Supabase Examples</h1>
+          </div>
+          <div className="col-auto">
+            <div className="btn-group" role="group">
+              <button type="button" className="btn btn-outline-secondary btn-sm" onClick={fetchTasks}>
+                Recargar
+              </button>
+            </div>
+          </div>
+        </div>
       </header>
-      <main>
+      <main className="mt-2">
         <h2>Mis tareas</h2>
         <ul>
           {tasks.map(task => <li key={task.id}>
