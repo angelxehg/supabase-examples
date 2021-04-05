@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { createClient } from '@supabase/supabase-js'
 
 import './App.css';
@@ -32,7 +33,9 @@ function App() {
       <header>
         <h1>Supabase Examples</h1>
         <p>Hola mundo</p>
-        <button onClick={fetchTasks}>Recargar</button>
+        <Button onClick={fetchTasks}>
+          Recargar
+        </Button>
       </header>
       <main>
         <h2>Mis tareas</h2>
